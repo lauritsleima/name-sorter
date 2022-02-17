@@ -4,7 +4,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class NameService {
@@ -24,7 +26,7 @@ public class NameService {
         return result;
     }
 
-    public ArrayList<String> getSortedNames() {
+    public ArrayList<String> getSortedNames(NameRequest request) {
         List<Name> namesEntity = nameRepository.findAll();
         List<NameDto> namesDto = nameMapper.namesToNamesDto(namesEntity);
 
@@ -32,8 +34,14 @@ public class NameService {
         for (NameDto nameDto : namesDto) {
             names.add(nameDto.getName());
         }
-        //Sort alphabetically acending
-        names.sort(String::compareToIgnoreCase);
+
+        if (request.getOrderAscOrDesc().toLowerCase(Locale.ROOT).equals("asc")) {
+            Collections.sort(names);
+        }
+
+        if (request.getOrderAscOrDesc().toLowerCase(Locale.ROOT).equals("desc")) {
+            Collections.reverse(names);
+        }
 
         return names;
 

@@ -17,8 +17,8 @@ public class NameController {
     }
 
     @GetMapping("/get/sorted/names")
-    public ArrayList<String> getSortedNames() {
-        return nameService.getSortedNames();
+    public ArrayList<String> getSortedNames(@RequestParam NameRequest request) {
+        return nameService.getSortedNames(request);
     }
 
 
