@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS name;
+CREATE TABLE name
+(id serial NOT NULL PRIMARY KEY,
+ name varchar(255) NOT NULL);
