@@ -17,33 +17,39 @@ public class NameService {
     @Resource
     private NameMapper nameMapper;
 
-    public Result addNewName(NameDto newName) {
+    public String addNewName(NameDto newName) {
         Name name = nameMapper.nameDtoToName(newName);
         nameRepository.save(name);
-
-        Result result = new Result();
-        result.setMessage("Success! Name added to database");
-        return result;
+        return "Nimi andmebaasi lisatud!";
     }
 
-    public ArrayList<String> getSortedNames(NameRequest request) {
-        List<Name> namesEntity = nameRepository.findAll();
-        List<NameDto> namesDto = nameMapper.namesToNamesDto(namesEntity);
+    public List<String> getSortedNames(Character filterByLetter, String sortBy) {
+        List<String> names = new ArrayList<>();
 
-        ArrayList<String> names = new ArrayList<>();
-        for (NameDto nameDto : namesDto) {
-            names.add(nameDto.getName());
+        if (filterByLetter != null) {
+            List<Name> filteredByLetter = nameRepository.findNameByFilterLetter(filterByLetter, filterByLetter);
+            List<NameDto> allNamesDto = nameMapper.namesToNamesDto(filteredByLetter);
+            for (NameDto nameDto : allNamesDto) {
+                names.add(nameDto.getName());
+            }
+        } else {
+            List<Name> allNames = nameRepository.findAll();
+            List<NameDto> allNamesDto = nameMapper.namesToNamesDto(allNames);
+            for (NameDto nameDto : allNamesDto) {
+                names.add(nameDto.getName());
+            }
         }
 
-        if (request.getOrderAscOrDesc().toLowerCase(Locale.ROOT).equals("asc")) {
-            Collections.sort(names);
-        }
+        if (sortBy != null) {
+            if (sortBy.toLowerCase(Locale.ROOT).equals("asc")) {
+                Collections.sort(names);
+            }
 
-        if (request.getOrderAscOrDesc().toLowerCase(Locale.ROOT).equals("desc")) {
-            Collections.reverse(names);
+            if (sortBy.toLowerCase(Locale.ROOT).equals("desc")) {
+                Collections.sort(names, Collections.reverseOrder());
+            }
         }
 
         return names;
-
     }
 }

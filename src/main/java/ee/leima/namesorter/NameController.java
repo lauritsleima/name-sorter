@@ -1,9 +1,10 @@
 package ee.leima.namesorter;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class NameController {
@@ -12,13 +13,18 @@ public class NameController {
     private NameService nameService;
 
     @PostMapping("/add/new")
-    public Result addNewName(@RequestParam NameDto name) {
+    @Operation(summary = "Lisab uue nime")
+    public String addNewName(@RequestParam NameDto name) {
         return nameService.addNewName(name);
     }
 
     @GetMapping("/get/sorted/names")
-    public ArrayList<String> getSortedNames(@RequestParam NameRequest request) {
-        return nameService.getSortedNames(request);
+    @Operation(summary = "Võid sisesta tähe tulemuse filtreerimiseks. " +
+            "Võid sisestada teise parameetrina asc või desc, et saada nimekirja sorteeritult vastavalt A>Z või Z>A")
+    public List<String> getSortedNames(
+            @RequestParam(required = false) Character filterByLetter,
+            @RequestParam(required = false) String sortBy) {
+        return nameService.getSortedNames(filterByLetter, sortBy);
     }
 
 
