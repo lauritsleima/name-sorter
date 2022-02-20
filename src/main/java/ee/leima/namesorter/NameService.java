@@ -18,23 +18,23 @@ public class NameService {
     private NameMapper nameMapper;
 
     public String addNewName(NameDto newName) {
-        Name name = nameMapper.nameDtoToName(newName);
+        Name name = nameMapper.toEntity(newName);
         nameRepository.save(name);
         return "Nimi andmebaasi lisatud!";
     }
 
-    public List<String> getSortedNames(Character filterByLetter, String sortBy) {
+    public List<String> getSortedNames(Character filterLetter, String sortBy) {
         List<String> names = new ArrayList<>();
 
-        if (filterByLetter != null) {
-            List<Name> filteredByLetter = nameRepository.findNameByFilterLetter(filterByLetter, filterByLetter);
-            List<NameDto> allNamesDto = nameMapper.namesToNamesDto(filteredByLetter);
+        if (filterLetter != null) {
+            List<Name> filteredByLetter = nameRepository.findNamesByFilterLetter(filterLetter, filterLetter);
+            List<NameDto> allNamesDto = nameMapper.toDto(filteredByLetter);
             for (NameDto nameDto : allNamesDto) {
                 names.add(nameDto.getName());
             }
         } else {
             List<Name> allNames = nameRepository.findAll();
-            List<NameDto> allNamesDto = nameMapper.namesToNamesDto(allNames);
+            List<NameDto> allNamesDto = nameMapper.toDto(allNames);
             for (NameDto nameDto : allNamesDto) {
                 names.add(nameDto.getName());
             }

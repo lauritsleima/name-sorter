@@ -22,9 +22,9 @@ public class NameController {
     @Operation(summary = "Võid sisesta tähe tulemuse filtreerimiseks. " +
             "Võid sisestada teise parameetrina asc või desc, et saada nimekirja sorteeritult vastavalt A>Z või Z>A")
     public List<String> getSortedNames(
-            @RequestParam(required = false) Character filterByLetter,
+            @RequestParam(required = false) Character filterLetter,
             @RequestParam(required = false) String sortBy) {
-        return nameService.getSortedNames(filterByLetter, sortBy);
+        return nameService.getSortedNames(filterLetter, sortBy);
     }
 
 

@@ -13,6 +13,6 @@ public interface NameRepository extends JpaRepository<Name, Integer> {
     List<Name> findByNameContainingOrNameStartingWith(String filter, String filter2);
 
     @Query("select n from Name n where upper(n.name) like upper(concat('%', ?1, '%')) or upper(n.name) like upper(concat(?2, '%'))")
-    List<Name> findNameByFilterLetter(Character filter, Character filter2);
+    List<Name> findNamesByFilterLetter(Character filter, Character filter2);
 
 }
