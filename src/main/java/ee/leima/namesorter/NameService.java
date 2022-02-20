@@ -17,8 +17,9 @@ public class NameService {
     @Resource
     private NameMapper nameMapper;
 
-    public String addNewName(NameDto newName) {
-        Name name = nameMapper.toEntity(newName);
+    public String addNewName(String newName) {
+        Name name = new Name();
+        name.setName(newName);
         nameRepository.save(name);
         return "Nimi andmebaasi lisatud!";
     }

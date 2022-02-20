@@ -14,7 +14,7 @@ public class NameController {
 
     @PostMapping("/add/new")
     @Operation(summary = "Lisab uue nime")
-    public String addNewName(@RequestParam NameDto name) {
+    public String addNewName(@RequestParam String name) {
         return nameService.addNewName(name);
     }
 
